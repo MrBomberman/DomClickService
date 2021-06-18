@@ -2,67 +2,98 @@ import React, { useEffect, useState } from 'react';
 import QuestionService from '../../services/questionService';
 import './questionPage.css'
 
+
+const getData = new QuestionService();
+
+
 function QuestionPage(){
     
-    const getData = new QuestionService();
+    
 
-    const [questionList, setQuestion] = useState([]); // засовываем массив наших вопросов
+    const [questions, setQuestions] = useState([]) // засовываем массив наших вопросов
     const [count, setCount] = useState(0)
     // const [questionId , setQuestionId] = useState(Math.floor(Math.random()* 9))
 
-   useEffect(() => {
-    if(questionList.length !== 10){
-        getData.getResource()
-        .then(res => setQuestion(res))
-    } else {
-        return // останавливает обновление запросов
-    }
-   })
+    useEffect(() => {getData.getResource()
+        .then(res => setQuestions(res))}, []);
     
    
 
 
-    const content = <View quesList={questionList} id={count}/>;
+    const content = count === 10 ? <Finish id={count}/> :  <View question={questions.map(ques => (
+        ques.question
+    ))} id={count}/> ;
    
+    const answers = <CheckboxOrRadio variants={questions} id={count}/>;
+
+
     return (
         <div>
 
             {content}
-        
-            <button onClick={() => setCount(count + 1)}>
+            {answers}
+            <button onClick={() => setCount(prev => prev + 1)}>
         Complete
       </button>
-      <button onClick={() => setCount(count - 1 )}>
+      <button onClick={() => setCount(prev => prev - 1)}>
         Return
       </button>
         </div>
     )
 }
 
-
-function View ({quesList, id}) { // создаем локальный компонент
+function CheckboxOrRadio ({variants, id}) { // создаем локальный компонент
     
-    const {category, type, difficulty, question} = quesList[id];
+    const correctAnswer = variants.map(answer => {
+        return answer.correct_answer
+    })
+
+    const otherAnswers = variants.map(answers => {
+        return answers.incorrect_answers
+    })
+
+    
+
+    const typeOfAnswer = variants.map(answers => {
+        return answers.type
+    })
+    
+    if(typeOfAnswer[id] === 'multiple'){
+        return (
+            <input type='checkbox'/>
+        ) 
+    } else {
+        return (
+            <input type='radio'/>
+              
+           
+        )
+    }
+
+
+}
+
+
+
+function View ({question, id}) { // создаем локальный компонент
+    
+    // const {category, type, difficulty, question} = questions[id];
     
     return (
         <div className='question'>
-            <h4>Question: {question}</h4>
-            <ul className="list-group list-group-flush">
-                <li className="list-group-item d-flex justify-content-between">
-                    <span><strong>Type: </strong></span>
-                    <span>{type}</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                    <span><strong>Category: </strong></span>
-                    <span>{category}</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                    <span><strong>Difficulty: </strong></span>
-                    <span>{difficulty}</span>
-                </li>
-                <span>{id}</span>
+            <h4>Question: {question[id]}</h4>
 
-            </ul>
+        </div>
+    )
+}
+
+
+
+function Finish({id}){
+    return (
+
+        <div className='question'>
+            Right answers: {id}
         </div>
     )
 }

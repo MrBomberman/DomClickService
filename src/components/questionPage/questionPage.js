@@ -24,6 +24,7 @@ function QuestionPage(){
         ques.question
     ))} id={count}/> ;
    
+   
     const answers = <CheckboxOrRadio variants={questions} id={count}/>;
 
 
@@ -48,26 +49,55 @@ function CheckboxOrRadio ({variants, id}) { // создаем локальный
         return answer.correct_answer
     })
 
-    const otherAnswers = variants.map(answers => {
-        return answers.incorrect_answers
-    })
+
 
     
 
     const typeOfAnswer = variants.map(answers => {
         return answers.type
     })
-    
+
+    // const answers =  variants[id].incorrect_answers + variants[id].correct_answer
+    let array = []
+
+
+
     if(typeOfAnswer[id] === 'multiple'){
+        
+   
+
+        // array.forEach(elem => {
+        //     return (
+        //     <label><input type="checkbox"/>${elem}</label>
+        //     )
+        // })
+        
+        
         return (
-            <input type='checkbox'/>
-        ) 
-    } else {
-        return (
-            <input type='radio'/>
-              
+                <div class='question'>
+                    <label><input type="checkbox"/></label>
+                    <label><input type="checkbox"/>{correctAnswer[id]}</label>
+                </div>
+            )
+       
+       
+          
            
-        )
+           
+       
+
+
+    } else {
+       
+        
+        return (
+            <div class='question'>
+            <label><input type="radio"/></label>
+            <label><input type="radio"/>{correctAnswer[id]}</label>
+            </div>
+           )
+           
+        
     }
 
 

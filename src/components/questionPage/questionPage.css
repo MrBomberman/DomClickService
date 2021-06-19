@@ -1,13 +1,17 @@
-li {
-    list-style: none;
+ul {
+    display: flex;
+    flex-direction: column;
+    
 }
+
 button {
+    
     padding: 7px;
     font-size: 20px;
     width: 100%;
 }
 .container {
-    width: 500px;
+    width: 700px;
     
     -webkit-box-shadow: 0px 5px 35px 23px rgba(111, 129, 142, 0.2);
     -moz-box-shadow: 0px 5px 35px 23px rgba(111, 129, 142, 0.2);

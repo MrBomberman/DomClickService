@@ -3,8 +3,8 @@ import QuestionService from '../../services/questionService';
 import './questionPage.css'
 
 
-const getData = new QuestionService();
 
+const getData = new QuestionService();
 
 function QuestionPage(){
     
@@ -12,26 +12,31 @@ function QuestionPage(){
 
     const [questions, setQuestions] = useState([]) // засовываем массив наших вопросов
     const [count, setCount] = useState(0)
-    // const [questionId , setQuestionId] = useState(Math.floor(Math.random()* 9))
+    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {getData.getResource()
-        .then(res => setQuestions(res))}, []);
+    useEffect(() => {
+        getData.getResource()
+                .then(res => setQuestions(res))
+                .then(() => setLoading(false))
+    },[] )
+        
     
+        
+
+
+    // const content = count === 10 ? <Finish id={count}/> :  <View question={questions.map(ques => (
+    //     ques.question
+    // ))} id={count}/> ;
    
-
-
-    const content = count === 10 ? <Finish id={count}/> :  <View question={questions.map(ques => (
-        ques.question
-    ))} id={count}/> ;
    
-   
-    const answers = <CheckboxOrRadio variants={questions} id={count}/>;
-
-
+    const answers = !loading ? <View questions={questions} id={count}/> : <h1>Loading.....</h1>;
+    
+    
     return (
-        <div>
+        <div className='container'>
+            
 
-            {content}
+            
             {answers}
             <button onClick={() => setCount(prev => prev + 1)}>
         Complete
@@ -43,79 +48,43 @@ function QuestionPage(){
     )
 }
 
-function CheckboxOrRadio ({variants, id}) { // создаем локальный компонент
-    
-    const correctAnswer = variants.map(answer => {
-        return answer.correct_answer
-    })
 
-
-
+function View ({questions, id}) { // создаем локальный компонент
+    console.log(questions[id].type);
     
 
-    const typeOfAnswer = variants.map(answers => {
-        return answers.type
-    })
-
-    // const answers =  variants[id].incorrect_answers + variants[id].correct_answer
-    let array = []
-
-
-
-    if(typeOfAnswer[id] === 'multiple'){
-        
-   
-
-        // array.forEach(elem => {
-        //     return (
-        //     <label><input type="checkbox"/>${elem}</label>
-        //     )
-        // })
-        
-        
+    if(questions[id].type === 'multiple'){
         return (
-                <div class='question'>
-                    <label><input type="checkbox"/></label>
-                    <label><input type="checkbox"/>{correctAnswer[id]}</label>
-                </div>
-            )
-       
-       
-          
-           
-           
-       
-
-
-    } else {
-       
-        
-        return (
-            <div class='question'>
-            <label><input type="radio"/></label>
-            <label><input type="radio"/>{correctAnswer[id]}</label>
+            <div className='question'>
+                <h4>{questions[id].question}</h4>
+                <ul>
+                {questions[id].incorrect_answers.map((answer) => <label><input type="checkbox"/> {answer}</label>)}
+                <label><input type="checkbox"/>{questions[id].correct_answer}</label>
+                </ul>
+                
             </div>
-           )
-           
-        
+            )
+    } else {
+        return (
+                <div className='question'>
+                    <h4>{questions[id].question}</h4>
+                    <ul>
+                    {questions[id].incorrect_answers.map((answer, j) => <label><input type="radio" name='radio'/> {answer}</label>)}
+                    <label><input type="radio" name='radio'/> {questions[id].correct_answer}</label>
+                    </ul>
+                </div>
+                
+                )
     }
-
-
+  
+        
+    
+        
+    
 }
 
 
 
-function View ({question, id}) { // создаем локальный компонент
-    
-    // const {category, type, difficulty, question} = questions[id];
-    
-    return (
-        <div className='question'>
-            <h4>Question: {question[id]}</h4>
-
-        </div>
-    )
-}
 
 
 

@@ -56,7 +56,7 @@ function QuestionPage(){
             <div className='container'>
                 <div id='main'>
             <div>
-                {answers}
+            {answers}
                 </div>
                 
                 </div>
@@ -68,13 +68,15 @@ function QuestionPage(){
             </div>
             
         )
+    } else if(loading) {
+        return <h1>Loading....</h1>
     } else {
-     return (
-         <div>
-             <FinishPage questions={questions} score={score} hard={hard} medium={medium} easy={easy}/>
-         </div>
-     )
-    }
+        return (
+            <div>
+                <FinishPage questions={questions} score={score} hard={hard} medium={medium} easy={easy}/>
+            </div>
+        )
+       }
    
 }
 
@@ -91,12 +93,12 @@ function View ({questions, id}) { // создаем локальный комп�
     
     const mainBlock = document.querySelector('div > .container > #main'); // our block with questions and variants of answers
     console.log(mainBlock)
-    const titleOfQuestion = `<h3>${questions[id].question.replace(/(&quot;|&#039; )/g,"'")}</h3>`
+    const titleOfQuestion = `<h3>${questions[id].question.replace(/(&quot;)/g,"\"").replace(/(&#039;)/g, "'")}</h3>`
     const incorrectAnswers = questions[id].incorrect_answers.map((answer) =>{ 
-        return `<label class="control control-checkbox"><input type="checkbox" value='wrong'/> ${answer.replace(/(&quot;|&#039;)/g,"'")}<div class="control_indicator"></div></label>`}).join('')
+        return `<label class="control control-checkbox"><input type="checkbox" value='wrong'/> ${answer.replace(/(&quot;)/g,"\"").replace(/(&#039;)/g, "'")}<div class="control_indicator"></div></label>`}).join('')
     const correctAnswer = `
     <label class="control control-checkbox">
-    <input type="checkbox" value='right' /> ${questions[id].correct_answer.replace(/(&quot;|&#039; )/g,"'")}<div class="control_indicator"></div></label>`
+    <input type="checkbox" value='right' /> ${questions[id].correct_answer.replace(/(&quot;)/g,"\"").replace(/(&#039;)/g, "'")}<div class="control_indicator"></div></label>`
     
     console.log(arrOfAnswers)
    
@@ -114,9 +116,9 @@ function View ({questions, id}) { // создаем локальный комп�
         return (
                 mainBlock.innerHTML = `${titleOfQuestion}
                 <ul>
-                ${questions[id].incorrect_answers.map((answer) => `<label  class='b-contain'><input class='radiobtn' type="radio" value='wrong' name='radio'/> ${answer.replace(/(&quot;|&#039;)/g,"'")}<div class="b-input"></div></label>`)}
+                ${questions[id].incorrect_answers.map((answer) => `<label  class='b-contain'><input class='radiobtn' type="radio" value='wrong' name='radio'/> ${answer.replace(/(&quot;)/g,"\"").replace(/(&#039;)/g, "'")}<div class="b-input"></div></label>`)}
             <label class='b-contain'>
-                <input type="radio" value='right' name='radio'/> ${questions[id].correct_answer.replace(/(&quot;|&#039; )/g,"'")}<div class="b-input"></div>
+                <input type="radio" value='right' name='radio'/> ${questions[id].correct_answer.replace(/(&quot;)/g,"\"").replace(/(&#039;)/g, "'")}<div class="b-input"></div>
             </label>
                 </ul>`
                 )

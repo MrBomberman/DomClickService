@@ -1,19 +1,12 @@
-
-
 export default class QuestionService {
-    constructor(){
-        this._apiBase = 'https://opentdb.com/api.php?amount=10'
-    }
-    
-        getResource = async () => { // делаем классический метод
-            const res =  await fetch(`${this._apiBase}`);
-            const { results } = await res.json();
+  constructor() {
+    this._apiBase = "https://opentdb.com/api.php?amount=10";
+  }
 
-            return  results
-        }
-    
+  getResource = async () => {
+    const res = await fetch(`${this._apiBase}`);
+    const { results } = await res.json();
 
-
-
-    
+    return results;
+  };
 }

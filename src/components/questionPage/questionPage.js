@@ -12,7 +12,9 @@ function QuestionPage(){
     const [count, setCount] = useState(0)
     const [loading, setLoading] = useState(true)
     const [score, setScore] = useState(0);
-    // const [check, setCheck] = useState(false)
+    const [hard, setDiff] = useState(0);
+    const [medium, setMedium] = useState(0);
+    const [easy, setEasy] = useState(0);
 
     useEffect(() => {
         getData.getResource()
@@ -22,13 +24,6 @@ function QuestionPage(){
         
     
 
-
-    const inputs = document.querySelectorAll('input')
-    inputs.forEach(input => {
-        if(input.value === 'right' && input.checked){
-            console.log('good')
-        }
-    })
    
    
     const answers = !loading ? <View questions={questions} id={count}/> : <h1>Loading.....</h1>;
@@ -36,16 +31,27 @@ function QuestionPage(){
     function changeStates(){
         const inputs = document.querySelectorAll('input')
         inputs.forEach(input => {
-            if(input.value === 'right' && input.checked){
+            if(questions[count].difficulty === 'hard' && input.value === 'right' && input.checked){
                 setScore(() => score + 1)
+                setDiff(() => hard + 1)
+            } else if(questions[count].difficulty === 'medium' && input.value === 'right' && input.checked){
+                setMedium(() => medium + 1)
+                setScore(() => score + 1)
+            } else if(questions[count].difficulty === 'easy' && input.value === 'right' && input.checked){
+               setEasy(() => easy + 1)
+               setScore(() => score + 1)
             }
         })
+
+
         setCount(prev => prev + 1)
     }
     
 
+
+    console.log(questions)
     
-    if(count < 10){
+    if(count < questions.length){
         return (
             <div className='container'>
                 <div id='main'>
@@ -65,7 +71,7 @@ function QuestionPage(){
     } else {
      return (
          <div>
-             <FinishPage questions={questions} score={score}/>
+             <FinishPage questions={questions} score={score} hard={hard} medium={medium} easy={easy}/>
          </div>
      )
     }
@@ -80,11 +86,7 @@ function View ({questions, id}) { // создаем локальный комп�
     questions[id].incorrect_answers.forEach((ques) => {
         return arrOfAnswers.push([ques])
     })
-//     <label class="control control-checkbox">
-//     First checkbox
-//         <input type="checkbox" checked="checked" />
-//     <div class="control_indicator"></div>
-// </label>
+
 
     
     const mainBlock = document.querySelector('div > .container > #main'); // our block with questions and variants of answers
@@ -103,6 +105,7 @@ function View ({questions, id}) { // создаем локальный комп�
     if(questions[id].type === 'multiple'){
         return (
             mainBlock.innerHTML = `${titleOfQuestion}
+            <h4>Choose one variant: </h4>
                 <ul>${incorrectAnswers}
                 ${correctAnswer}
              </ul>`

@@ -9,13 +9,10 @@ ul {
 }
 
 button {
-    position: absolute;
     bottom: 0px;
     padding: 7px;
     font-size: 20px;
     text-align: center;
-    margin: 0 250px;
-    width: 20%;
     height: 10%;
     border-radius: 6px;
     align-items: center;
@@ -23,8 +20,7 @@ button {
 }
 .container {
     position: relative;
-    width: 700px;
-    height: 90vh;
+    max-width: 700px;
     -webkit-box-shadow: 0px 5px 35px 23px rgba(111, 129, 142, 0.2);
     -moz-box-shadow: 0px 5px 35px 23px rgba(111, 129, 142, 0.2);
     box-shadow: 0px 5px 35px 23px rgba(111, 129, 142, 0.2);
@@ -314,4 +310,10 @@ h4 {
 
 .b-contain:first-child .b-input::before {
 	visibility: hidden;
+}
+
+.submit-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

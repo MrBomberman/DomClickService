@@ -1,22 +1,13 @@
-import React, { Component } from 'react';
-import './App.css';
-import QuestionPage from '../questionPage/questionPage';
+import React, { Component } from "react";
+import "./App.css";
+import QuestionPage from "../QuestionPage";
 
-export default class App extends Component{
-   
-    
-    
-    render(){
-        return (
-            <>
-           <h1>Super Quiz</h1>
-            <QuestionPage/>
-         </>
-     )
-    }
-
-
-
-}
-
-
+const App = () => {
+  return (
+    <div>
+      <h1>Super Quiz</h1>
+      <QuestionPage />
+    </div>
+  );
+};
+export default App;
